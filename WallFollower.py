@@ -1,21 +1,37 @@
 from myro import *
 
-def main():
+def scriptedLab1():
 
     seenObstacle = False
 
-    print("Starting loop")
-    while(not seenObstacle or (getObstacle("middle") or getObstacle("left") or getObstacle("right"))):
-        if getObstacle("middle"):
+    while(not seenObstacle):
+        print("looping")
+        forward(1, 0.8)
+        if (getObstacle("left") or getObstacle("right") or getObstacle("middle")):
             seenObstacle = True
-            if getObstacle("left"):
-                print("Turning right")
-                turnRight(1, 0.5)
-            elif getObstacle("right"):
-                print("Turning left")
-                turnLeft(1, 0.5)
-        else:
-            forward(1, 0.8)
+        print(seenObstacle)
+
+    turnLeft(1, 0.65)
+
+    obstacles = lookAround()
+    while(obstacles[1]):
+        forward(1, 2.5)
+        obstacles = lookAround()
+
+def lookAround():
+    seenLeftObstacle = False
+    seenRightObstacle = False
+
+    turnLeft(1, 0.5)
+    seenLeftObstacle = getObstacle("middle")
+
+    turnRight(1, 1)
+    seenRightObstacle = getObstacle("middle")
+
+    turnLeft(1, 0.5)
+
+    return (seenLeftObstacle, seenRightObstacle)
+
 
 init("COM3")
-main()
+scriptedLab1()
