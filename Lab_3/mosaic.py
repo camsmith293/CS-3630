@@ -236,8 +236,7 @@ def rot_from_homog(H, K):
         R (np.matrix of shape 3x3): Rotation matrix from frame a to frame b
     """
     # code here
-    H_inv = np.linalg.inv(H)
-
+    R = K.I * H * K
     return R
 
 
@@ -253,6 +252,7 @@ def extract_y_angle(R):
         y_ang (float): angle in radians
     """
     # code here
+    y_ang = np.arctan(R.item[3]/R.item[0])
     return y_ang
 
 
