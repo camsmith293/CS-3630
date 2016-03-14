@@ -64,16 +64,17 @@ def propose_pairs(descripts_a, keypts_a, descripts_b, keypts_b):
     """
     # code here
     matches = []
+    matches_trip = []
 
     for i in range(len(descripts_a)):
         lowest_distance = 2147483647
         lowest_index = -1
         for j in range(len(descripts_b)):
-            distance = L2_distance(descripts_a[i], descripts_b[j])
+            distance = cv2.norm.(descripts_a[i], descripts_b[j], cv2.NORM_HAMMING)
             if distance <= lowest_distance:
                 lowest_distance = distance
                 lowest_index = j
-        matches.append((i,lowest_index,lowest_distance))
+        matches_trip.append((i,lowest_index,lowest_distance))
 
 
     matches_trip = sorted(matches, key = lambda x: x[2])
@@ -84,8 +85,8 @@ def propose_pairs(descripts_a, keypts_a, descripts_b, keypts_b):
     pair_pts_b = []
 
     for match in matches:
-        pair_pts_a.append(keypts_a[match.queryIdx])
-        pair_pts_b.append(keypts_b[match.trainIdx])
+        pair_pts_a.append(keypts_a[match[0]])
+        pair_pts_b.append(keypts_b[match[1]])
 
     return pair_pts_a, pair_pts_b
 
@@ -142,7 +143,7 @@ def homog_ransac(pair_pts_a, pair_pts_b):
     """
     # code here
     threshold = 0.1
-    steps = 100
+    steps = 10000
 
     best_H = None
     best_inliers_a = best_inliers_b = []
@@ -150,7 +151,7 @@ def homog_ransac(pair_pts_a, pair_pts_b):
     for i in range(steps):
         current_samples_a = []
         current_samples_b = []
-        for i in range(4):
+        for i in range(100):
             rand_index = random.randint(0, len(pair_pts_a) - 1)
             current_samples_a.append(pair_pts_a[rand_index])
             current_samples_b.append(pair_pts_b[rand_index])
@@ -235,6 +236,8 @@ def rot_from_homog(H, K):
         R (np.matrix of shape 3x3): Rotation matrix from frame a to frame b
     """
     # code here
+    H_inv = np.linalg.inv(H)
+
     return R
 
 
