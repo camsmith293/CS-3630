@@ -70,7 +70,7 @@ def propose_pairs(descripts_a, keypts_a, descripts_b, keypts_b):
         lowest_distance = 2147483647
         lowest_index = -1
         for j in range(len(descripts_b)):
-            distance = cv2.norm.(descripts_a[i], descripts_b[j], cv2.NORM_HAMMING)
+            distance = cv2.norm(descripts_a[i], descripts_b[j], cv2.NORM_HAMMING)
             if distance <= lowest_distance:
                 lowest_distance = distance
                 lowest_index = j
